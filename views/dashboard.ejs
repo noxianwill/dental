@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Dashboard - Dental Software</title>
+      <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+      <link rel="stylesheet" href="/css/style.css">
+      <style>
+         .text-white {
+         text-decoration: none;
+         }
+         .bg-successnav {
+         background-color: #343a40;
+         }
+         .sidebar {
+         position: fixed;
+         top: 0;
+         bottom: 0;
+         left: 0;
+         z-index: 100;
+         background-color: #85898f;
+         color: white;
+         padding-top: 3.5rem;
+         overflow-x: hidden;
+         width: 250px;
+         transition: all 0.3s;
+         }
+         .sidebar-heading {
+         padding: 1rem;
+         text-align: center;
+         }
+         .list-group-item {
+         background-color: #85898f;
+         border-color: white;
+         }
+         .list-group-item:hover {
+         background-color: #343a40;
+         border-color: white;
+         }
+         .logout-button {
+         position: absolute;
+         bottom: 1rem;
+         left: 1rem;
+         }
+         .main-content {
+         margin-left: 250px;
+         padding: 20px;
+         transition: all 0.3s;
+         }
+         .sidebar.active {
+         left: -250px;
+         }
+         .main-content.active {
+         margin-left: 0;
+         }
+         .navbar-light .navbar-nav .nav-link {
+         color: #fff;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="sidebar">
+         <h3 class="sidebar-heading">Dental Software</h3>
+         <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a href="#" class="text-white" data-section="patient-management">Patient Management</a></li>
+            <li class="list-group-item"><a href="#" class="text-white" data-section="clinical-documentation">Clinical Documentation</a></li>
+            <li class="list-group-item"><a href="#" class="text-white" data-section="billing-invoicing">Billing and Invoicing</a></li>
+            <li class="list-group-item"><a href="#" class="text-white" data-section="appointment-management">Appointment Management</a></li>
+            <li class="list-group-item"><a href="#" class="text-white" data-section="patient-communication">Patient Communication</a></li>
+            <li class="list-group-item"><a href="#" class="text-white" data-section="inventory-management">Inventory Management</a></li>
+            <li class="list-group-item"><a href="#" class="text-white" data-section="analytics-reporting">Analytics and Reporting</a></li>
+            <li class="list-group-item"><a href="#" class="text-white" data-section="compliance-security">Compliance and Security</a></li>
+            <li class="list-group-item"><a href="#" class="text-white" data-section="workflow-automation">Workflow Automation</a></li>
+            <li class="list-group-item"><a href="#" class="text-white" data-section="marketing-patient-acquisition">Marketing and Patient Acquisition</a></li>
+            <li class="list-group-item"><a href="#" class="text-white" data-section="manage-users">Manage Users</a></li>
+         </ul>
+      </div>
+      <div class="main-content">
+      <header class="navbar navbar-expand-lg navbar-light bg-successnav header">
+         <div class="container-fluid">
+            <button type="button" id="sidebarCollapse" class="btn btn-outline-light">
+            <i class="bi bi-list"></i>
+            </button>
+            <span class="navbar-brand mx-auto" style="color: white">Dashboard</span>
+            <div class="dropdown">
+               <a class="nav-link dropdown-toggle text-white" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+               <%= name %>
+               </a>
+               <ul class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuLink">
+                  <li><a class="dropdown-item li-custom" href="#">Profile</a></li>
+                  <li><a class="dropdown-item li-custom" href="#">Settings</a></li>
+                  <li>
+                     <hr class="dropdown-divider">
+                  </li>
+                  <li><a href="/logout" class="dropdown-item li-custom"><i class="bi bi-box-arrow-right"></i>Logout</a></li>
+               </ul>
+            </div>
+         </div>
+      </header>
+      <main>
+         <div class="container-fluid">
+         <div id="content">
+            <h1 class="h2" id="currentDateTime">Welcome to the Dashboard! Today's Date And Time:</h1>
+            <div class="separator"></div>
+         </div>
+         <!-- Patient Management Section -->
+         <div id="patient-management-section" style="display: none;">
+            <!-- Button to open the modal -->
+            <button type="button" id="addPatientBtn" class="btn btn-primary">Add Patient</button>
+            <!-- Modal -->
+            <div class="modal fade" id="addPatientModal" tabindex="-1" aria-labelledby="addPatientModalLabel" aria-hidden="true">
+               <div class="modal-dialog">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <h5 class="modal-title" id="addPatientModalLabel">Add New Patient</h5>
+                     </div>
+                     <div class="modal-body">
+                        <!-- Modal Form -->
+                        <form id="addPatientForm">
+                           <div class="mb-3">
+                              <!-- Entries and inputs -->
+                              <select id="patient_pronounce" name="patient_pronounce" class="form-control" required>
+                                 <option value="">Sex</option>
+                                 <option value="Mr">Mr</option>
+                                 <option value="Mrs">Mrs</option>
+                              </select>
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="first_name" name="first_name" class="form-control" required placeholder="First Name">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="last_name" name="last_name" class="form-control" required placeholder="Last Name">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="email" name="email" class="form-control" required placeholder="E-mail">
+                           </div>
+                           <div class="mb-3">
+                              <input type="date" id="date_of_birth" name="date_of_birth" class="form-control" required placeholder="Date of birth">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="address" name="address" class="form-control" required placeholder="Address">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="state" name="state" class="form-control" required placeholder="State">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="city" name="city" class="form-control" required placeholder="City">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="zip_code" name="zip_code" class="form-control" required placeholder="Zip Code">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="phone_number" name="phone_number" class="form-control" required placeholder="Phone Number">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="insurance" name="insurance" class="form-control" required placeholder="Insurance">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="private_insurance" name="private_insurance" class="form-control" required placeholder="Private Insurance">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="insurance_personal_number" name="insurance_personal_number" class="form-control" placeholder="Insurance Number">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="bill_address" name="bill_address" class="form-control" required placeholder="Billing Address">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="cabin" name="cabin" class="form-control" placeholder="Cabin">
+                           </div>
+                           <button type="button" class="btn btn-secondary" aria-label="Close" data-bs-dismiss="modal">Close</button>
+                           <button type="submit" class="btn btn-primary">Save Patient</button>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="mb-3"></div>
+            <!-- Patient List -->
+            <div class="table-responsive">
+               <table class="table table-striped table-bordered table-hover">
+                  <thead class="thead-dark">
+                     <tr>
+                        <th>Number</th>
+                        <th>Patient Pronounce</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Date of Birth</th>
+                        <th>Address</th>
+                        <th>State</th>
+                        <th>City</th>
+                        <th>Zip Code</th>
+                        <th>Phone Number</th>
+                        <th>Insurance</th>
+                        <th>Private Insurance</th>
+                        <th>Insurance Personal Number</th>
+                        <th>Bill Address</th>
+                        <th>Cabin</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <% if (patients && patients.length > 0) { %>
+                     <% patients.forEach(patient => { %>
+                     <tr>
+                        <td>
+                           <%= patient.id || 'N/A' %>
+                        </td>
+                        <td>
+                           <%= patient.patient_pronounce || 'N/A' %>
+                        </td>
+                        <td>
+                           <%= patient.first_name || 'N/A' %>
+                        </td>
+                        <td>
+                           <%= patient.last_name || 'N/A' %>
+                        </td>
+                        <td>
+                           <%= patient.email || 'N/A' %>
+                        </td>
+                        <td>
+                           <%= patient.date_of_birth || 'N/A' %>
+                        </td>
+                        <td>
+                           <%= patient.address || 'N/A' %>
+                        </td>
+                        <td>
+                           <%= patient.state || 'N/A' %>
+                        </td>
+                        <td>
+                           <%= patient.city || 'N/A' %>
+                        </td>
+                        <td>
+                           <%= patient.zip_code || 'N/A' %>
+                        </td>
+                        <td>
+                           <%= patient.phone_number || 'N/A' %>
+                        </td>
+                        <td>
+                           <%= patient.insurance || 'N/A' %>
+                        </td>
+                        <td>
+                           <%= patient.private_insurance || 'N/A' %>
+                        </td>
+                        <td>
+                           <%= patient.insurance_personal_number || 'N/A' %>
+                        </td>
+                        <td>
+                           <%= patient.bill_address || 'N/A' %>
+                        </td>
+                        <td>
+                           <%= patient.cabin || 'N/A' %>
+                        </td>
+                     </tr>
+                     <% }); %>
+                     <% } else { %>
+                     <tr>
+                        <td colspan="15" class="text-center">No patients found.</td>
+                     </tr>
+                     <% } %>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+         <!-- Clinical Documentation Section -->
+         <div id="clinical-documentation-section" style="display: none;">
+            <h2>Clinical Documentation</h2>
+            <p>Manage clinical records, notes, and patient history.</p>
+         </div>
+         <!-- Billing and Invoicing Section -->
+         <div id="billing-invoicing-section" style="display: none;">
+            <h2>Billing and Invoicing</h2>
+            <p>Manage billing information, invoices, and payment history.</p>
+         </div>
+         <!-- Appointment Management Section -->
+         <div id="appointment-management-section" style="display: none;">
+            <h2>Appointment Management</h2>
+            <p>Schedule and manage patient appointments.</p>
+         </div>
+         <!-- Patient Communication Section -->
+         <div id="patient-communication-section" style="display: none;">
+            <h2>Patient Communication</h2>
+            <p>Send notifications and manage communication with patients.</p>
+         </div>
+         <!-- Inventory Management Section -->
+         <div id="inventory-management-section" style="display: none;">
+            <h2>Inventory Management</h2>
+            <p>Track and manage medical supplies and equipment.</p>
+         </div>
+         <!-- Analytics and Reporting Section -->
+         <div id="analytics-reporting-section" style="display: none;">
+            <h2>Analytics and Reporting</h2>
+            <p>Analyze performance and generate reports.</p>
+         </div>
+         <!-- Compliance and Security Section -->
+         <div id="compliance-security-section" style="display: none;">
+            <h2>Compliance and Security</h2>
+            <p>Ensure compliance with regulations and maintain security.</p>
+         </div>
+         <!-- Workflow Automation Section -->
+         <div id="workflow-automation-section" style="display: none;">
+            <h2>Workflow Automation</h2>
+            <p>Automate routine tasks to improve efficiency.</p>
+         </div>
+         <!-- Marketing and Patient Acquisition Section -->
+         <div id="marketing-patient-acquisition-section" style="display: none;">
+            <h2>Marketing and Patient Acquisition</h2>
+            <p>Manage marketing campaigns and patient acquisition strategies.</p>
+         </div>
+         <!-- Manage Users Section -->
+         <div id="manage-users-section" style="display: none;">
+            <h2>Manage Users</h2>
+            <p>Add, edit, and manage users within the system.</p>
+         </div>
+      </main>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="/js/script.js"></script>
+      <script>
+         document.getElementById('sidebarCollapse').addEventListener('click', function () {
+             document.querySelector('.sidebar').classList.toggle('active');
+             document.querySelector('.main-content').classList.toggle('active');
+         });
+         
+         $(document).ready(function() {
+         function updateDateTime() {
+            var now = new Date();
+            var date = now.toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            var time = now.toLocaleTimeString(undefined, {
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric'
+            });
+            $('#currentDateTime').html('Welcome to the Dashboard! Today\'s Date And Time:<br>' + date + ' ' + time);
+         }
+         updateDateTime();
+         setInterval(updateDateTime, 1000);
+         });
+      </script>
+   </body>
+</html>

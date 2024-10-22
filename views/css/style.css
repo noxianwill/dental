@@ -1,0 +1,282 @@
+/* /views/css/style.css */
+/* Global styles */
+ html, body {
+     height: 100%;
+     margin: 0;
+     padding: 0;
+     overflow: hidden;
+    /* Prevent scrolling on both PC and mobile */
+}
+ body {
+     display: flex;
+     flex-direction: column;
+     font-family: Arial, sans-serif;
+}
+/* Background section */
+ .section-bg {
+     background-image: url('/img/background.png');
+     background-size: cover;
+     background-position: center;
+     flex: 1;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     min-height: 100vh;
+    /* Ensure full viewport height */
+     overflow: hidden;
+    /* Prevent scrolling */
+}
+/* Navbar styles */
+ .navbar {
+     padding: 1rem 0;
+     z-index: 1000;
+}
+ .navbar-brand {
+     margin-right: auto;
+    /* Move the brand/logo to the left */
+}
+ .navbar-nav {
+     margin-left: auto;
+    /* Move the nav items to the right */
+}
+ .nav-link {
+     color: white !important;
+    /* Ensure nav link color is white */
+}
+/* Fancy button styles for nav links */
+ .btn-fancy {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     padding: 0.5rem 1rem;
+     width: 150px;
+    /* Set a fixed width */
+     height: 50px;
+    /* Set a fixed height */
+     margin: 0.25rem;
+     border: none;
+     border-radius: 15px;
+     background: linear-gradient(45deg, #6ca7ba 0%, #80bab5 100%);
+     color: white !important;
+     font-weight: bold;
+     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+     transition: all 0.3s ease;
+}
+ .btn-fancy:hover, .btn-fancy:focus {
+     background: #93a3cc;
+     border-color: #ffffff;
+     text-decoration: none;
+     transform: translateY(-2px);
+}
+ .btn-fancy:active {
+     transform: translateY(1px);
+}
+/* Login section styles */
+ #login {
+     display: flex;
+     justify-content: center;
+     align-items: flex-start;
+    /* Align items to the top of the section */
+     min-height: 100vh;
+    /* Minimum height of the viewport */
+     background-color: #f8f9fa;
+    /* Background color for login section */
+     padding: 2rem 0;
+    /* Adjust padding for mobile */
+     overflow-y: hidden;
+    /* Prevent scrolling */
+}
+ .card {
+     background-color: rgba(255, 255, 255, 0.7) !important;
+    /* Semi-transparent white background for card */
+     border: none !important;
+    /* Remove border if any */
+     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    /* Soft shadow */
+     transition: transform 0.3s ease-in-out;
+}
+ .card-body {
+     padding: 2rem;
+     border-radius: 8px;
+}
+ .card-title {
+     font-weight: bold;
+     font-size: 1.25rem;
+}
+ .card-title a {
+     text-decoration: none;
+     color: inherit;
+}
+ .card-title a:hover {
+     text-decoration: underline;
+}
+ .card-text {
+     color: #6c757d;
+    /* Dark gray text */
+}
+/* Footer styles */
+ footer {
+     background-color: #343a40;
+     color: white;
+     padding: 2rem 0;
+     width: 100%;
+     position: fixed;
+     height: 100px;
+    /* Fix the footer at the bottom of the page */
+     bottom: 0;
+     left: 0;
+     z-index: 1000;
+    /* Ensure it appears above other content */
+}
+ footer a {
+     color: white;
+}
+ footer a:hover {
+     text-decoration: underline;
+}
+/* Mobile-specific styles */
+ @media (max-width: 768px) {
+     html, body {
+         overflow: auto;
+        /* Allow scrolling on both PC and mobile */
+    }
+     .section-bg {
+         overflow: hidden;
+        /* Prevent scrolling on background section */
+    }
+     #login {
+         overflow-y: auto;
+        /* Enable scrolling for the login section only */
+    }
+     .card-body {
+         padding: 1rem;
+    }
+     footer {
+         position: fixed;
+        /* Fix the footer at the bottom of the viewport */
+    }
+     .navbar-nav {
+         margin-left: auto;
+        /* Align nav items to the right on mobile */
+    }
+     .btn-fancy {
+         width: 100%;
+        /* Make buttons fill the width */
+         margin: 0.5rem 0;
+        /* Add vertical margin */
+    }
+    /* Adjust login form alignment */
+     .card {
+         margin-top: -2rem;
+        /* Pull the card up slightly */
+    }
+}
+ .text-center {
+     text-align: center;
+    /* Ensures the text (and inline elements like the button) is centered */
+}
+/* Flash messages styles */
+ .flash-message {
+     margin: 20px 0;
+     text-align: center;
+     padding: 10px;
+     border-radius: 5px;
+}
+ .flash-message.success {
+     color: green;
+     background-color: #d4edda;
+     border: 1px solid #c3e6cb;
+}
+ .flash-message.error {
+     color: red;
+     background-color: #f8d7da;
+     border: 1px solid #f5c6cb;
+}
+ .center-flash {
+     text-align: center;
+}
+ .dropdown-menu-custom {
+     margin-left: -23px;
+}
+ .li-custom:hover {
+     background-color: #343A40;
+     color: white;
+     text-decoration: none;
+}
+ .separator {
+     border-top: 3px solid #343A40;
+     border-radius: 5px;
+     width: 100%;
+     margin-top: 20px;
+     margin-bottom: 20px;
+}
+ .modal-header {
+     background-color: #343a40;
+     color: white;
+}
+ .modal-body {
+     padding: 20px;
+}
+ .modal-footer {
+     padding: 10px;
+     text-align: right;
+}
+ .table-responsive {
+     margin: 20px;
+}
+ table {
+     width: 100%;
+     border-collapse: collapse;
+     border-radius: 8px;
+     overflow: hidden;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+ th, td {
+     padding: 12px 15px;
+     text-align: left;
+    /* Align text to the left */
+     font-size: 14px;
+    /* Smaller font size for table cells */
+     border-bottom: 1px solid #e0e0e0;
+}
+ th {
+     background-color: #343a40;
+    /* Dark header */
+     color: white;
+     font-size: 12px;
+    /* Smaller font size for headers */
+     text-transform: uppercase;
+     letter-spacing: 0.1em;
+     white-space: nowrap;
+    /* Prevents wrapping */
+}
+ tr:hover {
+     background-color: #f5f5f5;
+    /* Light grey background on hover */
+}
+ .thead-dark {
+     background-color: #343a40;
+    /* Dark header */
+     color: white;
+}
+ tbody tr:nth-child(even) {
+     background-color: #f9f9f9;
+    /* Alternate row color */
+}
+ tbody tr:nth-child(odd) {
+     background-color: white;
+    /* Odd rows are white */
+}
+ td {
+     vertical-align: middle;
+    /* Center the text vertically */
+}
+/* Optional: Responsive design for smaller screens */
+ @media (max-width: 768px) {
+     th, td {
+         font-size: 12px;
+        /* Smaller text on mobile */
+         padding: 8px;
+        /* Reduced padding */
+    }
+}
