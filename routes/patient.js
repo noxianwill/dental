@@ -2,7 +2,7 @@
 
 const express = require('express');
 const { addPatient , getPatientById , getAllPatients } = require('../models/patientModel');
-const { ensureAuthenticated } = require('../middleware/auth');
+const { ensureAuthenticated } = require('../middlewares/auth');
 const router = express.Router();
 
 // Route to add a new patient (protected)
