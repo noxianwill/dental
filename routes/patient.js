@@ -2,10 +2,11 @@
 
 const express = require('express');
 const { addPatient , getPatientById , getAllPatients } = require('../models/patientModel');
+const { ensureAuthenticated } = require('../middleware/auth');
 const router = express.Router();
 
-// Route to add a new patient
-router.post('/patients', async (req, res) => {
+// Route to add a new patient (protected)
+router.post('/patients', ensureAuthenticated, async (req, res) => {
     try {
         const patientData = req.body; // Get patient data from request body
         const patientId = await addPatient(patientData); // Validate and add the patient

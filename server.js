@@ -7,8 +7,10 @@ const bcryptjs = require('bcryptjs');
 const passport = require('passport');
 const flash = require('express-flash');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const path = require('path');
 const mysql = require('mysql2');
+
 const initializePassport = require('./passport-config');
 const db = require('./models/db');
 
@@ -18,6 +20,22 @@ const {
 } = require('./models/userModel');
 
 const app = express();
+
+// Configure MySQL session store
+const sessionStore = new MySQLStore({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
+});
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+	store: sessionStore
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -32,11 +50,6 @@ app.use(express.urlencoded({
     extended: false
 }));
 app.use(flash());
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false
-}));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -60,6 +73,6 @@ app.use((req, res, next) => {
     res.status(404).render('404');
 });
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+app.listen(5000, () => {
+    console.log('Server is running on port 5000');
 });

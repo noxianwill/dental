@@ -11,17 +11,6 @@ function checkAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
-function capitalizeName(name) {
-    return name.replace(/\b\w/g, char => char.toUpperCase());
-}
-
-router.get('/dashboard', checkAuthenticated, (req, res) => {
-    const formattedName = capitalizeName(req.user.name);
-    res.render('dashboard.ejs', {
-        name: formattedName
-    });
-});
-
 router.get('/', (req, res) => {
     res.render('index.ejs');
 });

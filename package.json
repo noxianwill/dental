@@ -17,13 +17,12 @@
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "express-flash": "^0.0.2",
+    "express-mysql-session": "^3.0.3",
     "express-session": "^1.18.0",
-<<<<<<< HEAD
     "joi": "^17.13.3",
-=======
->>>>>>> 29a635facd77f7f79cfce0081b686c0db20d72b1
     "mysql2": "^3.11.3",
     "nodemailer": "^6.9.14",
+    "npm": "^10.9.0",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "pm2": "^5.4.1"
