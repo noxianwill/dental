@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-// /views/js/script.js:
-
->>>>>>> 29a635facd77f7f79cfce0081b686c0db20d72b1
 document.addEventListener('DOMContentLoaded', function() {
     // Section references
     const sections = {
@@ -38,18 +33,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const section = this.getAttribute('data-section');
             if (section && sections[section]) {
                 sections[section].style.display = 'block'; // Show the selected section
-<<<<<<< HEAD
 
                 if (section === 'patient-management') {
                     loadPatients(); // Load patients when the Patient Management section is shown
                 }
-=======
->>>>>>> 29a635facd77f7f79cfce0081b686c0db20d72b1
             }
         });
     });
 
-<<<<<<< HEAD
 const addPatientBtn = document.getElementById('addPatientBtn');
 const addPatientModalEl = document.getElementById('addPatientModal');
 
@@ -189,62 +180,4 @@ async function loadPatients() {
         console.error('Error loading patients:', error);
     }
 }
-=======
-
-
-    async function loadPatients() {
-        const response = await fetch('/patients');
-        const patients = await response.json();
-
-        const patientsList = document.getElementById('patientsList');
-        patientsList.innerHTML = '<h3>Patient List</h3>';
-        patients.forEach(patient => {
-            patientsList.innerHTML += `<p>${patient.first_name} ${patient.last_name} - ${patient.insurance}</p>`;
-        });
-    }
-
-    // Call loadPatients on section show
-    document.getElementById('managePatientsButton').addEventListener('click', function() {
-        const section = document.getElementById('patient-management-section');
-        section.style.display = section.style.display === 'none' ? 'block' : 'none';
-        if (section.style.display === 'block') {
-            loadPatients();
-        }
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Button to open the modal
-    const addPatientBtn = document.getElementById('addPatientBtn');
-    const addPatientModal = new bootstrap.Modal(document.getElementById('addPatientModal'));
-
-    addPatientBtn.addEventListener('click', function() {
-        addPatientModal.show(); // Show the modal when "Add Patient" is clicked
-    });
-
-    // Form submission
-    document.getElementById('addPatientForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        const formData = new FormData(this);
-        const patientData = Object.fromEntries(formData.entries());
-
-        const response = await fetch('/patients', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(patientData),
-        });
-
-        if (response.ok) {
-            alert('Patient added successfully!');
-            this.reset(); // Reset the form
-            addPatientModal.hide(); // Hide the modal
-            loadPatients(); // Load updated patient list
-        } else {
-            alert('Failed to add patient. Please try again.');
-        }
-    });
->>>>>>> 29a635facd77f7f79cfce0081b686c0db20d72b1
 });
