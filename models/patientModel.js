@@ -1,6 +1,7 @@
 // /models/patientModel.js
 
 const db = require('./db');
+<<<<<<< HEAD
 const Joi = require('joi');
 
 // Define the validation schema for patient data
@@ -32,6 +33,11 @@ function addPatient(patientData) {
     }
 
     // If validation passes, proceed with inserting into the database
+=======
+
+// Function to add a new patient
+function addPatient(patientData) {
+>>>>>>> 29a635facd77f7f79cfce0081b686c0db20d72b1
     return new Promise((resolve, reject) => {
         const sql = `
             INSERT INTO patients (
@@ -44,7 +50,11 @@ function addPatient(patientData) {
             patientData.patient_pronounce,
             patientData.first_name,
             patientData.last_name,
+<<<<<<< HEAD
             patientData.email,
+=======
+			patientData.email,
+>>>>>>> 29a635facd77f7f79cfce0081b686c0db20d72b1
             patientData.date_of_birth,
             patientData.address,
             patientData.state,
@@ -78,6 +88,7 @@ function getAllPatients() {
     });
 }
 
+<<<<<<< HEAD
 // Function to get patient by ID
 function getPatientById(id) {
     return new Promise((resolve, reject) => {
@@ -95,4 +106,9 @@ module.exports = {
     addPatient,
     getAllPatients,
 	getPatientById
+=======
+module.exports = {
+    addPatient,
+    getAllPatients
+>>>>>>> 29a635facd77f7f79cfce0081b686c0db20d72b1
 };

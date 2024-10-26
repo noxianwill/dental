@@ -60,6 +60,11 @@ app.use((req, res, next) => {
     res.status(404).render('404');
 });
 
+<<<<<<< HEAD
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
+=======
+app.listen(5000, () => {
+    console.log('Server is running on port 5000');
+>>>>>>> 29a635facd77f7f79cfce0081b686c0db20d72b1
 });
