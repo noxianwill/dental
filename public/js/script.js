@@ -126,12 +126,10 @@ if (addPatientForm) {
             </tr>
         `;
 
-        console.log("Appending new row to table: ", newRow); // Debugging log
         tableBody.insertAdjacentHTML('beforeend', newRow); // Append the new row
     }
 
     // Load patients when the patient management section is shown
-// Load patients when the patient management section is shown
 async function loadPatients() {
     try {
         const response = await fetch('/patients');
