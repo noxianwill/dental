@@ -22,7 +22,7 @@ const sendResetEmail = async (email, token) => {
         subject: 'Your Password Reset Link',
         html: `
             <p>You are receiving this email because a password reset request was made for your account.</p>
-            <p>Please click <a target="_blank" href="https://cs2demos.theworkpc.com/reset/${token}">here</a> to reset your password.</p>
+            <p>Please click <a target="_blank" href="http://gptcoding.theworkpc.com:3000/reset/${token}">here</a> to reset your password.</p>
             <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
         `
     };

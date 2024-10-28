@@ -73,14 +73,14 @@ initializePassport(
 
 // Import routes
 const authRoutes = require('./routes/auth')(db);
-const userRoutes = require('./routes/user');
+const routesRoutes = require('./routes/routes');
 const resetRoutes = require('./routes/reset')(db);
 const patientRoutes = require('./routes/patient');
 
 // Use routes
 app.use('/', patientRoutes);
 app.use('/', authRoutes);
-app.use('/', userRoutes);
+app.use('/', routesRoutes);
 app.use('/', resetRoutes);
 
 // 404 error handling

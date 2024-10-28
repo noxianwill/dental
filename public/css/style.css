@@ -14,7 +14,7 @@
 }
 /* Background section */
  .section-bg {
-     /* background-image: url('/img/background.png'); */
+     background-image: url('/img/background.png');
      background-size: cover;
      background-position: center;
      flex: 1;
@@ -279,4 +279,9 @@
          padding: 8px;
         /* Reduced padding */
     }
+}
+
+.tr-table {
+	background-color: #343A40;
+	color: white;
 }
