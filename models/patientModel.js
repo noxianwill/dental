@@ -108,9 +108,58 @@ function deletePatientById(id) {
     });
 }
 
+// Function to update a patient by ID
+function updatePatient(id, patientData) {
+    // Use the same validation schema for updating
+    const { error } = patientSchema.validate(patientData);
+    if (error) {
+        return Promise.reject(new Error(`Validation error: ${error.details[0].message}`));
+    }
+
+    return new Promise((resolve, reject) => {
+        const sql = `
+            UPDATE patients SET
+                patient_pronounce = ?, first_name = ?, last_name = ?, email = ?, 
+                date_of_birth = ?, address = ?, state = ?, city = ?, 
+                zip_code = ?, phone_number = ?, insurance = ?, 
+                private_insurance = ?, insurance_personal_number = ?, 
+                bill_address = ?, cabin = ?
+            WHERE id = ?`;
+
+        db.query(sql, [
+            patientData.patient_pronounce,
+            patientData.first_name,
+            patientData.last_name,
+            patientData.email,
+            patientData.date_of_birth,
+            patientData.address,
+            patientData.state,
+            patientData.city,
+            patientData.zip_code,
+            patientData.phone_number,
+            patientData.insurance,
+            patientData.private_insurance,
+            patientData.insurance_personal_number,
+            patientData.bill_address,
+            patientData.cabin,
+            id // Patient ID to update
+        ], (err, result) => {
+            if (err) {
+                return reject(err);
+            }
+            // Check if any rows were affected (i.e., patient was found and updated)
+            if (result.affectedRows === 0) {
+                return reject(new Error('Patient not found'));
+            }
+            resolve(result);
+        });
+    });
+}
+
 module.exports = {
     addPatient,
     getAllPatients,
 	getPatientById,
-	deletePatientById
+	deletePatientById,
+	updatePatient
 };
