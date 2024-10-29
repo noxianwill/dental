@@ -184,76 +184,32 @@
                <table>
                   <thead>
                      <tr class="tr-table">
-                        <th>Number</th>
-                        <th>Patient Pronounce</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Date of Birth</th>
-                        <th>Address</th>
-                        <th>State</th>
-                        <th>City</th>
-                        <th>Zip Code</th>
-                        <th>Phone Number</th>
-                        <th>Insurance</th>
-                        <th>Private Insurance</th>
-                        <th>Insurance Personal Number</th>
-                        <th>Bill Address</th>
-                        <th>Cabin</th>
+						<th>Number</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Phone Number</th>
+						<th>Insurance</th>
+						<th>Private Insurance</th>
+						<th>Insurance Personal Number</th>
+						<th>Bill Address</th>
+						<th>Cabin</th>
+						<th>actions</th>
                      </tr>
                   </thead>
                   <tbody id="patientsList">
                      <% if (patients && patients.length > 0) { %>
                      <% patients.forEach(patient => { %>
                      <tr>
-                        <td>
-                           <%= patient.id || 'N/A' %>
-                        </td>
-                        <td>
-                           <%= patient.patient_pronounce || 'N/A' %>
-                        </td>
-                        <td>
-                           <%= patient.first_name || 'N/A' %>
-                        </td>
-                        <td>
-                           <%= patient.last_name || 'N/A' %>
-                        </td>
-                        <td>
-                           <%= patient.email || 'N/A' %>
-                        </td>
-                        <td>
-                           <%= patient.date_of_birth || 'N/A' %>
-                        </td>
-                        <td>
-                           <%= patient.address || 'N/A' %>
-                        </td>
-                        <td>
-                           <%= patient.state || 'N/A' %>
-                        </td>
-                        <td>
-                           <%= patient.city || 'N/A' %>
-                        </td>
-                        <td>
-                           <%= patient.zip_code || 'N/A' %>
-                        </td>
-                        <td>
-                           <%= patient.phone_number || 'N/A' %>
-                        </td>
-                        <td>
-                           <%= patient.insurance || 'N/A' %>
-                        </td>
-                        <td>
-                           <%= patient.private_insurance || 'N/A' %>
-                        </td>
-                        <td>
-                           <%= patient.insurance_personal_number || 'N/A' %>
-                        </td>
-                        <td>
-                           <%= patient.bill_address || 'N/A' %>
-                        </td>
-                        <td>
-                           <%= patient.cabin || 'N/A' %>
-                        </td>
+						<td><%= patient.id || 'N/A' %></td>
+						<td><%= patient.first_name || 'N/A' %></td>
+						<td><%= patient.last_name || 'N/A' %></td>
+						<td><%= patient.phone_number || 'N/A' %></td>
+						<td><%= patient.insurance || 'N/A' %></td>
+						<td><%= patient.private_insurance || 'N/A' %></td>
+						<td><%= patient.insurance_personal_number || 'N/A' %></td>
+						<td><%= patient.bill_address || 'N/A' %></td>
+						<td><%= patient.cabin || 'N/A' %></td>
+						<td><button class="delete-button" data-id="<%= patient.id %>">Delete</button></td>
                      </tr>
                      <% }); %>
                      <% } else { %>

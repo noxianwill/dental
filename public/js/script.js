@@ -91,91 +91,118 @@ if (addPatientForm) {
 }
 
     // Function to append a new patient row to the table
-    function addPatientToTable(patient) {
-        const tableBody = document.querySelector('#patientsList'); // Ensure this targets the correct tbody
+function addPatientToTable(patient) {
+    const tableBody = document.querySelector('#patientsList'); // Ensure this targets the correct tbody
 
-        if (!tableBody) {
-            console.error('Could not find the table body with id "patientsList"');
-            return;
-        }
-
-        // Check and remove the "No patients found." row if it exists
-        const noPatientsRow = tableBody.querySelector('tr td[colspan="15"]');
-        if (noPatientsRow) {
-            noPatientsRow.parentElement.remove();
-        }
-
-        const newRow = `
-            <tr>
-                <td>${patient.id || 'N/A'}</td>
-                <td>${patient.patient_pronounce || 'N/A'}</td>
-                <td>${patient.first_name || 'N/A'}</td>
-                <td>${patient.last_name || 'N/A'}</td>
-                <td>${patient.email || 'N/A'}</td>
-                <td>${patient.date_of_birth || 'N/A'}</td>
-                <td>${patient.address || 'N/A'}</td>
-                <td>${patient.state || 'N/A'}</td>
-                <td>${patient.city || 'N/A'}</td>
-                <td>${patient.zip_code || 'N/A'}</td>
-                <td>${patient.phone_number || 'N/A'}</td>
-                <td>${patient.insurance || 'N/A'}</td>
-                <td>${patient.private_insurance || 'N/A'}</td>
-                <td>${patient.insurance_personal_number || 'N/A'}</td>
-                <td>${patient.bill_address || 'N/A'}</td>
-                <td>${patient.cabin || 'N/A'}</td>
-            </tr>
-        `;
-
-        tableBody.insertAdjacentHTML('beforeend', newRow); // Append the new row
+    if (!tableBody) {
+        console.error('Could not find the table body with id "patientsList"');
+        return;
     }
 
-    // Load patients when the patient management section is shown
+    // Check and remove the "No patients found." row if it exists
+    const noPatientsRow = tableBody.querySelector('tr td[colspan="15"]');
+    if (noPatientsRow) {
+        noPatientsRow.parentElement.remove();
+    }
+
+    const newRow = `
+        <tr>
+            <td>${patient.id || 'N/A'}</td>
+            <td>${patient.first_name || 'N/A'}</td>
+            <td>${patient.last_name || 'N/A'}</td>
+            <td>${patient.phone_number || 'N/A'}</td>
+            <td>${patient.insurance || 'N/A'}</td>
+            <td>${patient.private_insurance || 'N/A'}</td>
+            <td>${patient.insurance_personal_number || 'N/A'}</td>
+            <td>${patient.bill_address || 'N/A'}</td>
+            <td>${patient.cabin || 'N/A'}</td>
+            <td><button class="delete-button" data-id="${patient.id}">Delete</button></td>
+        </tr>
+    `;
+
+    tableBody.insertAdjacentHTML('beforeend', newRow); // Append the new row
+
+    // Reattach delete listeners after adding the new row
+    attachDeleteListeners();
+}
+
+// Function to load patients and their corresponding delete buttons
 async function loadPatients() {
     try {
         const response = await fetch('/patients');
         const patients = await response.json();
-
+        
         const patientsList = document.getElementById('patientsList');
         if (patientsList) {
-            patientsList.innerHTML = ''; // Clear the current list
+            patientsList.innerHTML = ''; // Clear current list
 
             if (patients.length === 0) {
-                // If no patients are returned, display a "No patients found." message
-                patientsList.innerHTML = `
-                    <tr>
-                        <td colspan="15" class="text-center">No patients found.</td>
-                    </tr>`;
+                // No patients found
+                patientsList.innerHTML = `<tr><td colspan="15" class="text-center">No patients found.</td></tr>`;
             } else {
-                // If patients exist, loop through and display them
+                // Loop through and display patients
                 patients.forEach(patient => {
                     const newRow = `
                         <tr>
                             <td>${patient.id || 'N/A'}</td>
-                            <td>${patient.patient_pronounce || 'N/A'}</td>
                             <td>${patient.first_name || 'N/A'}</td>
                             <td>${patient.last_name || 'N/A'}</td>
-                            <td>${patient.email || 'N/A'}</td>
-                            <td>${patient.date_of_birth || 'N/A'}</td>
-                            <td>${patient.address || 'N/A'}</td>
-                            <td>${patient.state || 'N/A'}</td>
-                            <td>${patient.city || 'N/A'}</td>
-                            <td>${patient.zip_code || 'N/A'}</td>
                             <td>${patient.phone_number || 'N/A'}</td>
                             <td>${patient.insurance || 'N/A'}</td>
                             <td>${patient.private_insurance || 'N/A'}</td>
                             <td>${patient.insurance_personal_number || 'N/A'}</td>
                             <td>${patient.bill_address || 'N/A'}</td>
                             <td>${patient.cabin || 'N/A'}</td>
+                            <td><button class="delete-button" data-id="${patient.id}">Delete</button></td>
                         </tr>
                     `;
                     patientsList.insertAdjacentHTML('beforeend', newRow);
                 });
             }
-        } else {
-            console.error('Element with id "patientsList" not found.');
+
+            // Attach event listeners to the delete buttons
+            attachDeleteListeners();
         }
     } catch (error) {
         console.error('Error loading patients:', error);
     }
 }
+
+// Function to attach delete event listeners to each delete button
+function attachDeleteListeners() {
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async (event) => {
+            const patientId = button.getAttribute('data-id');
+            if (confirm(`Are you sure you want to delete patient with ID: ${patientId}?`)) {
+                try {
+                    const response = await fetch(`/patients/${patientId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log(data.message); // Log success message
+                        // Reload patients to reflect changes
+                        loadPatients();
+                    } else {
+                        const errorData = await response.json();
+                        console.error('Error deleting patient:', errorData.message);
+                        alert('Error deleting patient: ' + errorData.message);
+                    }
+                } catch (error) {
+                    console.error('Network error:', error);
+                    alert('Network error occurred while deleting patient.');
+                }
+            }
+        });
+    });
+}
+
+// Call loadPatients when the page loads or when the relevant section is shown
+loadPatients();
+
 });

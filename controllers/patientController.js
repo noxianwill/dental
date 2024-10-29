@@ -1,5 +1,5 @@
 // /controllers/patientController.js
-const { addPatient, getPatientById, getAllPatients } = require('../models/patientModel');
+const { addPatient, getPatientById, getAllPatients, deletePatientById } = require('../models/patientModel');
 
 // Controller to handle adding a new patient
 const addNewPatient = async (req, res) => {
@@ -41,4 +41,21 @@ const renderDashboard = async (req, res) => {
     }
 };
 
-module.exports = { addNewPatient, getAllPatientsData, renderDashboard };
+// Controller to handle deleting a patient by ID
+const deletePatient = async (req, res) => {
+    const patientId = req.params.id; // Capture the patient ID from the request parameters
+
+    try {
+        await deletePatientById(patientId); // Call the model function to delete the patient
+		console.log(`Patient deleted successfully: ${patientId}`);
+        res.status(200).json({ message: 'Patient deleted successfully', deletedPatientId: patientId}); // Send success response
+    } catch (error) {
+        console.error('Error deleting patient:', error);
+        if (error.message === 'Patient not found') {
+            return res.status(404).json({ message: 'Patient not found' }); // Handle not found case
+        }
+        res.status(500).json({ message: 'Error deleting patient' }); // Handle other errors
+    }
+};
+
+module.exports = { addNewPatient, getAllPatientsData, renderDashboard, deletePatient };

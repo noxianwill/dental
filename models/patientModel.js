@@ -91,8 +91,26 @@ function getPatientById(id) {
     });
 }
 
+// Function to delete patient by ID
+function deletePatientById(id) {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM patients WHERE id = ?';
+        db.query(sql, [id], (err, results) => {
+            if (err) {
+                return reject(err);
+            }
+            // Check if any rows were affected (i.e., patient was found and deleted)
+            if (results.affectedRows === 0) {
+                return reject(new Error('Patient not found'));
+            }
+            resolve(results); // Return the results
+        });
+    });
+}
+
 module.exports = {
     addPatient,
     getAllPatients,
-	getPatientById
+	getPatientById,
+	deletePatientById
 };

@@ -267,19 +267,17 @@
      background-color: white;
     /* Odd rows are white */
 }
- td {
-     vertical-align: middle;
-    /* Center the text vertically */
-}
+ /* td { */
+     /* vertical-align: middle; */
+    Center the text vertically
+/* } */
 /* Optional: Responsive design for smaller screens */
- @media (max-width: 768px) {
-     th, td {
-         font-size: 12px;
-        /* Smaller text on mobile */
-         padding: 8px;
-        /* Reduced padding */
-    }
-}
+ /* @media (max-width: 768px) { */
+     /* th, td { */
+         /* font-size: 12px; */
+         /* padding: 8px; */
+    /* } */
+/* } */
 
 .tr-table {
 	background-color: #343A40;
