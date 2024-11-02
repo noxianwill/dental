@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+	// Check if the dashboard container exists
+    const dashboardElement = document.querySelector('#patient-management-section'); // or any unique element in dashboard.ejs
+	if (dashboardElement) {
     // Section references
     const sections = {
         'patient-management': document.getElementById('patient-management-section'),
@@ -14,12 +17,12 @@ document.addEventListener('DOMContentLoaded', function() {
         'manage-users': document.getElementById('manage-users-section')
     };
 
-    // Function to hide all sections
-    function hideAllSections() {
-        for (let key in sections) {
-            sections[key].style.display = 'none';
+        // Function to hide all sections
+        function hideAllSections() {
+            for (let key in sections) {
+                sections[key].style.display = 'none';
+            }
         }
-    }
 
     // Event listeners for each link using data-section
     document.querySelectorAll('.list-group-item a').forEach(link => {
@@ -217,4 +220,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Call loadPatients when the page loads or when the relevant section is shown
     loadPatients();
+	}
+			$(document).ready(function () {
+			const dateInput = $("#date_of_birth");
+			
+			const datePicker = flatpickr(dateInput[0], {
+				dateFormat: "d/m/Y",  // DD/MM/YYYY format
+				maxDate: "today",     // Disable future dates
+				allowInput: true,     // Allows users to type the date
+				clickOpens: true,    // Prevents automatic calendar pop-up when typing
+				yearRange: [1900, new Date().getFullYear()], // Optional range for years
+			});
+
+			// Attach the focus event after initialization
+			dateInput.on("focus", function () {
+				if (!datePicker.isOpen) {  // Use the datePicker instance directly
+					datePicker.open();
+				}
+			});
+
+			// Automatically insert slashes as the user types
+			dateInput.on("input", function () {
+				// Get the current input value
+				let value = dateInput.val().replace(/\D/g, ''); // Remove non-digit characters
+
+				// Format the input value as DD/MM/YYYY
+				if (value.length >= 2) {
+					value = value.slice(0, 2) + (value.length > 2 ? '/' : '') + value.slice(2);
+				}
+				if (value.length >= 5) {
+					value = value.slice(0, 5) + (value.length > 5 ? '/' : '') + value.slice(5);
+				}
+
+				dateInput.val(value); // Update the input value
+			});
+		});
 });

@@ -7,59 +7,8 @@
       <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
 	  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
       <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 	  <link rel="stylesheet" href="/css/style.css">
-      <style>
-         .text-white {
-         text-decoration: none;
-         }
-         .bg-successnav {
-         background-color: #343a40;
-         }
-         .sidebar {
-         position: fixed;
-         top: 0;
-         bottom: 0;
-         left: 0;
-         z-index: 100;
-         background-color: #85898f;
-         color: white;
-         padding-top: 3.5rem;
-         overflow-x: hidden;
-         width: 250px;
-         transition: all 0.3s;
-         }
-         .sidebar-heading {
-         padding: 1rem;
-         text-align: center;
-         }
-         .list-group-item {
-         background-color: #85898f;
-         border-color: white;
-         }
-         .list-group-item:hover {
-         background-color: #343a40;
-         border-color: white;
-         }
-         .logout-button {
-         position: absolute;
-         bottom: 1rem;
-         left: 1rem;
-         }
-         .main-content {
-         margin-left: 250px;
-         padding: 20px;
-         transition: all 0.3s;
-         }
-         .sidebar.active {
-         left: -250px;
-         }
-         .main-content.active {
-         margin-left: 0;
-         }
-         .navbar-light .navbar-nav .nav-link {
-         color: #fff;
-         }
-      </style>
    </head>
    <body>
       <div class="sidebar">
@@ -139,7 +88,7 @@
                               <input type="email" id="email" name="email" class="form-control" required placeholder="E-mail">
                            </div>
                            <div class="mb-3">
-                              <input type="date" id="date_of_birth" name="date_of_birth" class="form-control" required placeholder="Date of birth">
+                              <input type="text" id="date_of_birth" name="date_of_birth" class="form-control" required placeholder="Birth date - Type DD/MM/YYYY" maxlength="10">
                            </div>
                            <div class="mb-3">
                               <input type="text" id="address" name="address" class="form-control" required placeholder="Address">
@@ -178,6 +127,78 @@
                   </div>
                </div>
             </div>
+			
+			<!-- Edit Patient Modal -->
+			<div class="modal fade" id="editPatientModal" tabindex="-1" aria-labelledby="editPatientModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="editPatientModalLabel">Edit Patient</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form id="editPatientForm">
+								                           <div class="mb-3">
+                              <!-- Entries and inputs -->
+                              <select id="edit_patient_pronounce" name="patient_pronounce" class="form-control" required>
+                                 <option value="">Sex</option>
+                                 <option value="Mr.">Mr.</option>
+                                 <option value="Ms.">Ms.</option>
+								 <option value="Mrs.">Mrs.</option>
+								 <option value="Dr.">Dr.</option>
+                              </select>
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="edit_first_name" name="first_name" class="form-control" required placeholder="First Name">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="edit_last_name" name="last_name" class="form-control" required placeholder="Last Name">
+                           </div>
+                           <div class="mb-3">
+                              <input type="email" id="edit_email" name="email" class="form-control" required placeholder="E-mail">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="edit_date_of_birth" name="date_of_birth" class="form-control" required placeholder="Birth date - Type DD/MM/YYYY" maxlength="10">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="edit_address" name="address" class="form-control" required placeholder="Address">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="edit_state" name="state" class="form-control" required placeholder="State">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="edit_city" name="city" class="form-control" required placeholder="City">
+                           </div>
+                           <div class="mb-3">
+                              <input type="number" id="edit_zip_code" name="zip_code" class="form-control" required min="1" max="99999" oninput="limitZipCode(this)" placeholder="Zip Code">
+                           </div>
+                           <div class="mb-3">
+                              <input type="tel" id="edit_phone_number" name="phone_number" class="form-control" required placeholder="Phone Number">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="edit_insurance" name="insurance" class="form-control" required placeholder="Insurance">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="edit_private_insurance" name="private_insurance" class="form-control" required placeholder="Private Insurance">
+                           </div>
+                           <div class="mb-3">
+                              <input type="tel" id="edit_insurance_personal_number" name="insurance_personal_number" class="form-control" placeholder="Insurance Number">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="edit_bill_address" name="bill_address" class="form-control" required placeholder="Billing Address">
+                           </div>
+                           <div class="mb-3">
+                              <input type="text" id="edit_cabin" name="cabin" class="form-control" placeholder="Cabin">
+                           </div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary" form="editPatientForm">Update Patient</button>
+						</div>
+					</div>
+				</div>
+			</div>
 			
             <!-- Patient List -->
             <div class="table-responsive">
@@ -272,40 +293,11 @@
          </div>
       </main>
 	  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 	  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      <script src="/js/script.js"></script>
-      <script>
-	  function limitZipCode(input) {
-    if (input.value.length > 5) {
-        input.value = input.value.slice(0, 5); // Trim the input to 5 digits
-    }
-}
-         document.getElementById('sidebarCollapse').addEventListener('click', function () {
-             document.querySelector('.sidebar').classList.toggle('active');
-             document.querySelector('.main-content').classList.toggle('active');
-         });
-         
-         $(document).ready(function() {
-         function updateDateTime() {
-            var now = new Date();
-            var date = now.toLocaleDateString(undefined, {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            var time = now.toLocaleTimeString(undefined, {
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric'
-            });
-            $('#currentDateTime').html('Welcome to the Dashboard! Today\'s Date And Time:<br>' + date + ' ' + time);
-         }
-         updateDateTime();
-         setInterval(updateDateTime, 1000);
-         });
-      </script>
+      <script src="/js/dashboard.js"></script>
    </body>
 </html>

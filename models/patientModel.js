@@ -9,7 +9,20 @@ const patientSchema = Joi.object({
     first_name: Joi.string().min(1).max(50).required(),
     last_name: Joi.string().min(1).max(50).required(),
     email: Joi.string().email({ tlds: { allow: false } }).required(),
-    date_of_birth: Joi.date().iso().less('now').required(),
+    date_of_birth: Joi.string()
+        .pattern(/^([0-2][0-9]|(3)[0-1])\/([0]?[1-9]|1[0-2])\/(\d{4})$/) // Matches DD/MM/YYYY format
+        .required()
+        .custom((value, helpers) => {
+            const [day, month, year] = value.split('/').map(Number);
+            const date = new Date(year, month - 1, day);
+            if (date > new Date()) {
+                return helpers.message("Date of birth must be in the past.");
+            }
+            return value;
+        })
+        .messages({
+            "string.pattern.base": "Date of birth must be in DD/MM/YYYY format.",
+        }),
     address: Joi.string().max(100).required(),
     state: Joi.string().max(50).required(),
     city: Joi.string().max(50).required(),
