@@ -65,150 +65,188 @@ document.addEventListener('DOMContentLoaded', function() {
         // Form Submission Handling
         const addPatientForm = document.getElementById('addPatientForm');
         const editPatientForm = document.getElementById('editPatientForm');
+		
+		    // Function to display messages
+    function showMessage(type, text) {
+        const messageContainer = document.getElementById("message-container");
+        const message = document.getElementById("message");
+
+        // Set the message type and text
+        message.className = `flash-message ${type}`;
+        message.textContent = text;
+
+        // Show the container
+        messageContainer.style.display = "block";
+
+        // Hide the message after 5 seconds
+        setTimeout(() => {
+            messageContainer.style.display = "none";
+            message.textContent = "";
+        }, 5000);
+    }
 
         // Add Patient Form Submission
-        if (addPatientForm) {
-            addPatientForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const formData = new FormData(this);
-                const patientData = Object.fromEntries(formData.entries());
+    if (addPatientForm) {
+        addPatientForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const patientData = Object.fromEntries(formData.entries());
 
-                try {
-                    const response = await fetch('/patients', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(patientData),
-                    });
+            try {
+                const response = await fetch("/patients", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(patientData),
+                });
 
-                    if (response.ok) {
-                        alert('Patient added successfully!');
-                        this.reset();
-                        addPatientModal.hide();
-                        loadPatients(); // Reload patients
-                    } else {
-                        const errorText = await response.text();
-                        alert('Failed to save patient. Error: ' + errorText);
-                    }
-                } catch (error) {
-                    console.error('Error during form submission:', error);
-                }
-            });
-        }
+				if (response.ok) {
+					showMessage("success", "Patient added successfully!");
+					this.reset(); // Clear the form
+
+					const addPatientModal = bootstrap.Modal.getInstance(document.getElementById("addPatientModal"));
+					addPatientModal.hide(); // Hide the modal
+
+					loadPatients(); // Reload the patient list
+				} else {
+					const errorText = await response.text();
+					showMessage("error", `Failed to add patient. Error: ${errorText}`);
+				}
+            } catch (error) {
+                console.error("Error during form submission:", error);
+            }
+        });
+    }
 
         // Edit Patient Form Submission
-        if (editPatientForm) {
-            editPatientForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const formData = new FormData(this);
-                const patientData = Object.fromEntries(formData.entries());
-                const patientId = this.dataset.patientId; // Get patient ID for editing
+    if (editPatientForm) {
+        editPatientForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const patientData = Object.fromEntries(formData.entries());
+            const patientId = this.dataset.patientId; // Get patient ID for editing
 
+            try {
+                const response = await fetch(`/patients/${patientId}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(patientData),
+                });
+
+                if (response.ok) {
+                    showMessage("success", "Patient updated successfully!");
+                    this.reset();
+                    delete this.dataset.patientId; // Clear the patient ID
+                    editPatientModal.hide(); // Hide the edit modal
+                    loadPatients(); // Reload patients
+                } else {
+                    const errorText = await response.text();
+                    showMessage("error", `Failed to update patient. Error: ${errorText}`);
+                }
+            } catch (error) {
+                console.error("Error during form submission:", error);
+            }
+        });
+    }
+
+        // Function to attach delete event listeners to each delete button
+			function attachDeleteListeners() {
+				const deleteButtons = document.querySelectorAll('.delete-button');
+				let patientIdToDelete = null; // Store patient ID temporarily for deletion
+
+				deleteButtons.forEach(button => {
+					button.addEventListener('click', (event) => {
+						// Set patientIdToDelete to the ID of the patient to delete
+						patientIdToDelete = button.getAttribute('data-id');
+
+						// Show the confirmation modal
+						const confirmModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+						confirmModal.show();
+					});
+				});
+
+				// Handle the confirm delete button click inside the modal
+        document.getElementById("confirmDeleteButton").addEventListener("click", async () => {
+            if (patientIdToDelete) {
                 try {
-                    const response = await fetch(`/patients/${patientId}`, {
-                        method: 'PUT',
+                    const response = await fetch(`/patients/${patientIdToDelete}`, {
+                        method: "DELETE",
                         headers: {
-                            'Content-Type': 'application/json',
+                            "Content-Type": "application/json",
                         },
-                        body: JSON.stringify(patientData),
                     });
 
                     if (response.ok) {
-                        alert('Patient updated successfully!');
-                        this.reset();
-                        delete this.dataset.patientId; // Clear the patient ID
-                        editPatientModal.hide(); // Hide the edit modal
-                        loadPatients(); // Reload patients
+                        showMessage("success", "Patient deleted successfully!");
+                        loadPatients(); // Reload patients to reflect changes
                     } else {
                         const errorText = await response.text();
-                        alert('Failed to update patient. Error: ' + errorText);
+                        showMessage("error", `Failed to delete patient. Error: ${errorText}`);
                     }
                 } catch (error) {
-                    console.error('Error during form submission:', error);
+                    console.error("Network error:", error);
+                    showMessage("error", "Network error occurred while deleting patient.");
+                } finally {
+                    // Clear the patient ID and hide the modal
+                    patientIdToDelete = null;
+                    const confirmModal = bootstrap.Modal.getInstance(document.getElementById("confirmDeleteModal"));
+                    confirmModal.hide();
                 }
-            });
-        }
-
-        // Function to attach delete event listeners to each delete button
-        function attachDeleteListeners() {
-            const deleteButtons = document.querySelectorAll('.delete-button');
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', async (event) => {
-                    const patientId = button.getAttribute('data-id');
-                    if (confirm(`Are you sure you want to delete patient with ID: ${patientId}?`)) {
-                        try {
-                            const response = await fetch(`/patients/${patientId}`, {
-                                method: 'DELETE',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            });
-
-                            if (response.ok) {
-                                loadPatients(); // Reload patients to reflect changes
-                            } else {
-                                const errorData = await response.json();
-                                console.error('Error deleting patient:', errorData.message);
-                                alert('Error deleting patient: ' + errorData.message);
-                            }
-                        } catch (error) {
-                            console.error('Network error:', error);
-                            alert('Network error occurred while deleting patient.');
-                        }
-                    }
-                });
-            });
-        }
+            }
+        });
+			}
 
         // Function to load patients and their corresponding delete buttons
-        async function loadPatients() {
-            try {
-                const response = await fetch('/patients');
-                const patients = await response.json();
+async function loadPatients() {
+    try {
+        const response = await fetch("/patients");
+        const patients = await response.json();
 
-                const patientsList = document.getElementById('patientsList');
-                if (patientsList) {
-                    patientsList.innerHTML = ''; // Clear current list
+        const patientsList = document.getElementById("patientsList");
+        if (patientsList) {
+            patientsList.innerHTML = ""; // Clear current list
 
-                    if (patients.length === 0) {
-                        patientsList.innerHTML = `<tr><td colspan="10" class="text-center">No patients found.</td></tr>`;
-                    } else {
-                        // Loop through and display patients
-                        patients.forEach(patient => {
-                            const newRow = `
-								<tr>
-									<td>${patient.id || 'N/A'}</td>
-									<td>${patient.first_name || 'N/A'}</td>
-									<td>${patient.last_name || 'N/A'}</td>
-									<td>${patient.phone_number || 'N/A'}</td>
-									<td>${patient.insurance || 'N/A'}</td>
-									<td>${patient.private_insurance || 'N/A'}</td>
-									<td>${patient.insurance_personal_number || 'N/A'}</td>
-									<td>${patient.bill_address || 'N/A'}</td>
-									<td>${patient.cabin || 'N/A'}</td>
-									<td>
-										<div style="display: flex; flex-direction: column;">
-											<button class="view-button btn btn-primary" data-id="${patient.id}" style="margin-bottom: 5px;">View</button>
-											<button class="edit-button btn btn-primary" data-id="${patient.id}" style="margin-bottom: 5px;">Edit</button>
-											<button class="delete-button btn btn-primary" data-id="${patient.id}">Delete</button>
-										</div>
-									</td>
-								</tr>
-							`;
-                            patientsList.insertAdjacentHTML('beforeend', newRow);
-                        });
-                    }
-
-                    // Attach event listeners to the delete buttons
-                    attachDeleteListeners();
-                    attachPatientListeners(); // Attach edit listeners after loading patients
-                    attachViewListeners();
-                }
-            } catch (error) {
-                console.error('Error loading patients:', error);
+            if (patients.length === 0) {
+                patientsList.innerHTML = `<tr><td colspan="10" class="text-center">No patients found.</td></tr>`;
+            } else {
+                patients.forEach((patient) => {
+                    const newRow = `
+                        <tr>
+                            <td>${patient.id || "N/A"}</td>
+                            <td>${patient.first_name || "N/A"}</td>
+                            <td>${patient.last_name || "N/A"}</td>
+                            <td>${patient.phone_number || "N/A"}</td>
+                            <td>${patient.insurance || "N/A"}</td>
+                            <td>${patient.private_insurance || "N/A"}</td>
+                            <td>${patient.insurance_personal_number || "N/A"}</td>
+                            <td>${patient.bill_address || "N/A"}</td>
+                            <td>${patient.cabin || "N/A"}</td>
+                            <td>
+                                <div style="display: flex; flex-direction: column;">
+                                    <button class="view-button btn btn-primary" data-id="${patient.id}" style="margin-bottom: 5px;">View</button>
+                                    <button class="edit-button btn btn-primary" data-id="${patient.id}" style="margin-bottom: 5px;">Edit</button>
+                                    <button class="delete-button btn btn-primary" data-id="${patient.id}">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    patientsList.insertAdjacentHTML("beforeend", newRow);
+                });
             }
+
+            // Reattach event listeners for edit, view, and delete buttons
+            attachPatientListeners();
+            attachViewListeners();
+            attachDeleteListeners();
         }
+    } catch (error) {
+        console.error("Error loading patients:", error);
+        showMessage("error", "Failed to load patients.");
+    }
+}
 
         // Function to attach edit event listeners
         function attachPatientListeners() {
@@ -267,8 +305,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         const popupHeight = 855;
 
                         // Calculate the center position
-                        const left = (window.screen.width / 2) - (popupWidth / 2);
-                        const top = (window.screen.height / 2) - (popupHeight / 2);
+                        const left = (window.innerWidth / 2) - (popupWidth / 2);
+                        const top = (window.innerHeight / 2) - (popupHeight / 2);
 
                         // Open the centered popup
                         const popup = window.open(
@@ -289,6 +327,11 @@ document.addEventListener('DOMContentLoaded', function() {
 							.card { box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
 							.card-header { background-color: #007bff; color: white; }
 							.detail-label { font-weight: bold; color: #333; }
+								@media print {
+								.card-footer {
+									display: none;
+								}
+							}
 						</style>
 					</head>
 					<body>
@@ -364,6 +407,7 @@ document.addEventListener('DOMContentLoaded', function() {
 									</div>
 								</div>
 								<div class="card-footer text-center">
+								    <button onclick="window.print()" class="btn btn-primary">Print</button>
 									<button onclick="window.close()" class="btn btn-secondary">Close</button>
 								</div>
 							</div>

@@ -39,21 +39,6 @@ function getUserByEmail(email) {
     });
 }
 
-function getUserByName(name) {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM users WHERE name = ?';
-        db.query(sql, [name], (err, results) => {
-            if (err) {
-                return reject(err);
-            }
-            if (results.length > 0) {
-                return resolve(results[0]);
-            }
-            return resolve(null);
-        });
-    });
-}
-
 module.exports = {
     getUserById,
     getUserByEmail

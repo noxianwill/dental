@@ -8,16 +8,16 @@ const router = express.Router();
 router.get('/dashboard', ensureAuthenticated, renderDashboard);
 
 // Define a POST route for adding new patients
-router.post('/patients', ensureAuthenticated, addNewPatient);
+router.post('/patients', addNewPatient);
 
 // Define a GET route for retrieving all patients
-router.get('/patients', ensureAuthenticated, getAllPatientsData);
+router.get('/patients', getAllPatientsData);
 
 // Define a GET route for getting a patient by ID
-router.get('/patients/:id', ensureAuthenticated, getPatientByIdController);
+router.get('/patients/:id', getPatientByIdController);
 
 // Define a DELETE route for deleting a patient by ID
-router.delete('/patients/:id', ensureAuthenticated, deletePatient);
+router.delete('/patients/:id', deletePatient);
 
 // Define a PUT route for updating a patient by ID
 router.put('/patients/:id', updatePatientData);

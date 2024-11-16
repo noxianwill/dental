@@ -76,12 +76,14 @@ const authRoutes = require('./routes/auth')(db);
 const routesRoutes = require('./routes/routes');
 const resetRoutes = require('./routes/reset')(db);
 const patientRoutes = require('./routes/patient');
+// const userRoutes = require('./routes/user');
 
 // Use routes
 app.use('/', patientRoutes);
 app.use('/', authRoutes);
 app.use('/', routesRoutes);
 app.use('/', resetRoutes);
+// app.use('/', userRoutes);
 
 // 404 error handling
 app.use((req, res, next) => {

@@ -334,3 +334,61 @@
          .navbar-light .navbar-nav .nav-link {
          color: #fff;
          }
+		 
+/* Updated Flash Messages Styles */
+.flash-message-patient {
+    margin: 15px 0; /* Adjust margin to fit better in the layout */
+    text-align: center;
+    padding: 12px 15px; /* Comfortable padding */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 16px; /* Slightly larger text for readability */
+    font-weight: bold; /* Emphasize text */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    animation: fadeIn 0.5s ease, fadeOut 0.5s ease 4.5s; /* Smooth fade in/out animation */
+    display: inline-block; /* Ensure proper alignment */
+    max-width: 90%; /* Prevent overly wide messages */
+    width: auto; /* Adjust width dynamically */
+}
+
+/* Success Message Style */
+.flash-message-patient.success {
+    background-color: #28a745; /* Bootstrap success green */
+    color: white; /* White text for contrast */
+    border: 1px solid #218838; /* Slightly darker green border */
+}
+
+/* Error Message Style */
+.flash-message-patient.error {
+    background-color: #dc3545; /* Bootstrap danger red */
+    color: white; /* White text for contrast */
+    border: 1px solid #c82333; /* Slightly darker red border */
+}
+
+/* Center the Flash Message */
+.center-flash-patient {
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* Add Smooth Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
